@@ -1,0 +1,14 @@
+.full-w {
+    width: 100%;
+}
+
+textarea {
+    height: 250px; 
+    resize: none;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 5px;
+    word-wrap: normal;
+}
+
