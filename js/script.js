@@ -1,6 +1,7 @@
 var txtFile = document.getElementById('file');
 var txtResponse = document.getElementById('response');
 var btnGenerate = document.getElementById('btn-generate');
+var btnRemoveAll = document.getElementById('btn-remove-all');
 var historyElement = document.getElementById('history');
 var txtShowDataCodes = document.getElementById('show-data-codes');
 var txtShowDataProducts = document.getElementById('show-data-products');
@@ -66,9 +67,11 @@ function formatResponse(response) {
 function saveGeneration(response) {
     var date = getFormatedDate();
     var idGeneration = Date.now();
+    var products = txtFile.value;
 
     var data = {
         id: idGeneration,
+        products: products,
         date: date,
         codes: response
     }
@@ -76,6 +79,11 @@ function saveGeneration(response) {
     historyCode.push(data);
     var saveFormatData = JSON.stringify(historyCode);
     localStorage.setItem(database, saveFormatData);
+    getHistory();
+}
+
+function saveData(data) {
+    localStorage.setItem(database, data);
     getHistory();
 }
 
@@ -92,9 +100,11 @@ function getFormatedDate() {
 
 function getHistory() {
     var savedData = localStorage.getItem(database);
-    var data = JSON.parse(savedData);
-    if (data != null) {
-        historyCode = data.reverse();
+    if (savedData != null && savedData != '') {
+        var data = JSON.parse(savedData);
+        if (data != null && data != '') {
+            historyCode = data.reverse();
+        }
     }
     showSavedData();
 }
@@ -126,6 +136,11 @@ function createDataElement(data) {
     btnShowElement.addEventListener('click', () => {
         txtShowDataDate.innerHTML = 'Gerado em: ' + data.date;
         txtShowDataCodes.value = data.codes;
+        txtShowDataProducts.value = data.products;
+    });
+
+    btnRemoveElement.addEventListener('click', () => {
+        removeData(data.id);
     });
 
     return listElement;
@@ -140,5 +155,27 @@ function showSavedData() {
     }
 }
 
+function removeData(id) {
+    var response = [];
+    for (var data of historyCode) {
+        if (data.id == id) {
+            continue;
+        }
+        response.push(data);
+    }
+    historyCode = response;
+    formatedResponse = JSON.stringify(response);
+    saveData(formatedResponse);
+}
+
+function removeAll() {
+    if (window.confirm('Deseja remover todos os dados?')) {
+        localStorage.setItem(database, '');
+        historyCode = [];
+        getHistory();
+    }
+}
+
 btnGenerate.addEventListener('click', generate);
+btnRemoveAll.addEventListener('click', removeAll);
 addEventListener('load', getHistory);
