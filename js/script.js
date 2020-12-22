@@ -2,6 +2,9 @@ var txtFile = document.getElementById('file');
 var txtResponse = document.getElementById('response');
 var btnGenerate = document.getElementById('btn-generate');
 var historyElement = document.getElementById('history');
+var txtShowDataCodes = document.getElementById('show-data-codes');
+var txtShowDataProducts = document.getElementById('show-data-products');
+var txtShowDataDate = document.getElementById('show-data-date');
 var database = 'EXTRACT-CODE-DB';
 var historyCode = [];
 var clickCount = 0;
@@ -84,7 +87,7 @@ function getFormatedDate() {
         hora = date.getHours(),
         min = date.getMinutes(),
         seg = date.getSeconds();
-    return `${dia}/${mes}/${ano} - ${hora}:${min}:${seg}`;
+    return `${dia}/${mes}/${ano} às ${hora}:${min}:${seg}`;
 }
 
 function getHistory() {
@@ -96,35 +99,33 @@ function getHistory() {
     showSavedData();
 }
 
-function createHeaderHistoryElement() {
-    var listElement = document.createElement('li');
-    var titleElement = document.createElement('h4');
-    var descriptionElement = document.createElement('p');
-    listElement.setAttribute('class', 'collection-header center');
-
-    listElement.appendChild(titleElement);
-    listElement.appendChild(descriptionElement);
-
-    titleElement.innerHTML = 'Histórico';
-    descriptionElement.innerHTML = 'Lista dos últimos códigos gerados';
-    return listElement;
-}
-
 function createDataElement(data) {
     var listElement = document.createElement('li');
     var titleElement = document.createElement('p');
     var codesElement = document.createElement('p');
+    var btnShowElement = document.createElement('button');
+    var btnRemoveElement = document.createElement('button');
+
     listElement.setAttribute('class', 'collection-item');
     titleElement.style.fontWeight = 'bold';
+    btnShowElement.setAttribute('class', 'waves-effect waves-light btn-small blue modal-trigger')
+    btnShowElement.setAttribute('data-target', 'show-data-modal');
+    btnRemoveElement.setAttribute('class', 'waves-effect waves-light btn-small red')
+    btnShowElement.style.marginRight = '5px';
 
     listElement.appendChild(titleElement);
     listElement.appendChild(codesElement);
+    listElement.appendChild(btnShowElement);
+    listElement.appendChild(btnRemoveElement);
 
     titleElement.innerHTML = data.date;
     codesElement.innerHTML = data.codes;
+    btnShowElement.innerHTML = 'mostrar';
+    btnRemoveElement.innerHTML = 'remover';
 
-    listElement.addEventListener('click', () => {
-        txtResponse.value = data.codes
+    btnShowElement.addEventListener('click', () => {
+        txtShowDataDate.innerHTML = 'Gerado em: ' + data.date;
+        txtShowDataCodes.value = data.codes;
     });
 
     return listElement;
@@ -132,7 +133,6 @@ function createDataElement(data) {
 
 function showSavedData() {
     historyElement.innerHTML = '';
-    historyElement.appendChild(createHeaderHistoryElement());
     if (historyCode != null) {
         for (var data of historyCode) {
             historyElement.appendChild(createDataElement(data));

@@ -38,19 +38,44 @@
                 </div>
 
                 <div class="input-field col s12">
-                    <input type="text" placeholder="Código(s) gerado(s)" id="response" class="blue-grey lighten-5 px-2">
+                    <input type="text" placeholder="Código(s) gerado(s)" id="response" class="grey lighten-3 px-2">
                 </div>
             </form>
         </div>
 
         <div class="col s6">
-            <ul class="collection with-header" id="history">
+            <ul class="collection with-header">
+                <li class="collection-header center">
+                    <h4>Histórico</h4>
+                    <button class="waves-effect waves-light btn-small red">Limpar tudo</button>
+                    <!-- <button class="waves-effect waves-light btn-small blue">Memória do dia</button> -->
+                </li>
+                <div id="history"></div>
                 <!-- <li class="collection-item">
                     <p style="font-weight: bold;">21/12/2020</p>
                     <p>287358,10607,10598,276371,10604,10603,10594,8794,8793,8787,408,34880,189,19401,31608,276989,276992,276991,276990,27692,27690,27685,27679,27674,27515,206455,286587,28003,31100,294,23863,159877,143269,143267,24096,23857,23855,23854,23851,23843,23660,23415,18121,18142,17975,269061,37161,15903,30908,19845,30901,28008,31163,142869,31228,360,80773,35847,171535,31641,401,35008,25374,80293,30555,127456,529,43547,20860,280633,280632,239544,31901,31611,31905,120705,163972,6817,39353,31930,22884,25339,19883,25330,27079,70,13506,281069,35918,40473,35911,34670,10669,10805,286943,26358,26306,26252,49837,36844,26306,26306,26252,103,174007,4723,286657,31433,106164,94731,43232,12505,24182,288726,35028,47472,10843,43521,36457,191926,35885,10952,286658,12375,117,43515,13787,244,19387</p>
                 </li> -->
-              </ul>
-        
+            </ul>
+
+        </div>
+    </div>
+
+    <div id="show-data-modal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h5 id="show-data-date"></h5>
+            <p>Detalhes da geração do arquivo</p>
+            
+            <p>códigos</p>
+            <div class="input-field col s12">
+                <textarea id="show-data-codes" class="materialize-textarea"></textarea>
+            </div>
+            <p>Produtos</p>
+            <div class="input-field col s12">
+                <textarea id="show-data-products" class="materialize-textarea"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
         </div>
     </div>
 
@@ -58,6 +83,7 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/materialize_script.js"></script>
 
 
 </body>

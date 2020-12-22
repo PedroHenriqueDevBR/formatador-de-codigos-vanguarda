@@ -2,7 +2,7 @@
     width: 100%;
 }
 
-textarea {
+textarea#file {
     height: 250px; 
     resize: none;
     border: 1px solid #ddd;
