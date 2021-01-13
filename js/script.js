@@ -1,14 +1,17 @@
-var txtFile = document.getElementById('file');
-var txtResponse = document.getElementById('response');
-var btnGenerate = document.getElementById('btn-generate');
-var btnRemoveAll = document.getElementById('btn-remove-all');
-var historyElement = document.getElementById('history');
-var txtShowDataCodes = document.getElementById('show-data-codes');
+var txtFile             = document.getElementById('file');
+var txtResponse         = document.getElementById('response');
+var btnGenerate         = document.getElementById('btn-generate');
+var btnRemoveAll        = document.getElementById('btn-remove-all');
+var btnSaveMemoryCodes  = document.getElementById('btn-save-memory-codes');
+var historyElement      = document.getElementById('history');
+var txtShowDataCodes    = document.getElementById('show-data-codes');
 var txtShowDataProducts = document.getElementById('show-data-products');
-var txtShowDataDate = document.getElementById('show-data-date');
-var database = 'EXTRACT-CODE-DB';
-var historyCode = [];
-var clickCount = 0;
+var txtMemoryCodes      = document.getElementById('memory-codes');
+var txtShowDataDate     = document.getElementById('show-data-date');
+var database            = 'EXTRACT-CODE-DB';
+var memoryDatabase      = 'MEMORY-CODE-DB';
+var historyCode         = [];
+var clickCount          = 0;
 
 function generate(e) {
     e.preventDefault();
@@ -35,7 +38,22 @@ function generate(e) {
         }
     }
 
-    response = formatResponse(response);
+    var finalResult = '';    
+    for (var letter of response) {
+        if (isNaN(Number(letter)) ) {
+            finalResult += ',';
+        } else {
+            finalResult += letter;
+        }
+    }
+
+    while (finalResult.indexOf(',,') != -1) {
+        finalResult = finalResult.replaceAll(',,', ',')
+    }
+
+    response = removeFirtsComma(finalResult);
+    response = removeLastComma(response);
+
     txtResponse.value = response;
     saveGeneration(response);
 }
@@ -56,10 +74,18 @@ function formatProductCode(code) {
     return response;
 }
 
-function formatResponse(response) {
+function removeLastComma(response) {
     var responseLength = response.length;
     if (response.lastIndexOf(',') == responseLength - 1) {
         return response.slice(0, responseLength - 1);
+    }
+    return response;
+}
+
+function removeFirtsComma(response) {
+    var responseLength = response.length;
+    if (response[0] == ',') {
+        return response.slice(1, responseLength);
     }
     return response;
 }
@@ -103,7 +129,16 @@ function getHistory() {
     if (savedData != null && savedData != '') {
         var data = JSON.parse(savedData);
         if (data != null && data != '') {
-            historyCode = data.reverse();
+            historyCode = data;
+            historyCode.sort((a, b) => {
+                if (a.date > b.date) {
+                    return -1;
+                }
+                if (a.date < b.date) {
+                    return 1;
+                }
+                return 0;
+            });
         }
     }
     showSavedData();
@@ -176,6 +211,19 @@ function removeAll() {
     }
 }
 
+function saveMemoryCodes() {
+    console.log('Dados salvos');
+    var memoryCodes = txtMemoryCodes.value;
+    localStorage.setItem(memoryDatabase, memoryCodes);
+}
+
+function getSavedCodes() {
+    var savedMemoryCodes = localStorage.getItem(memoryDatabase);
+    txtMemoryCodes.value = savedMemoryCodes;
+}
+
 btnGenerate.addEventListener('click', generate);
 btnRemoveAll.addEventListener('click', removeAll);
+btnSaveMemoryCodes.addEventListener('click', saveMemoryCodes);
 addEventListener('load', getHistory);
+addEventListener('load', getSavedCodes);
