@@ -3,6 +3,8 @@
 Sistema desenvolvido durante o estágio no Grupo Vanguarda e foi desenvolvido para solucionar 
 um problema interno da empresa.
 
+<img width="100%" src="https://github.com/PedroHenriqueDevBR/extract-code-vanguarda/blob/main/docs/print-01.png?raw=true">
+
 ## Motivação da solução
 
 O objetivo dessa aplicação é acelerar a extração de códigos de produtos recebidos por e-mail.
